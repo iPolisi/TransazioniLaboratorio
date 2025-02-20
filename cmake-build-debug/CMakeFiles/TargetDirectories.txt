@@ -1,0 +1,3 @@
+C:/Users/Cristian Polisi/CLionProjects/Trans/cmake-build-debug/CMakeFiles/Trans.dir
+C:/Users/Cristian Polisi/CLionProjects/Trans/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/Cristian Polisi/CLionProjects/Trans/cmake-build-debug/CMakeFiles/rebuild_cache.dir
