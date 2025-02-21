@@ -5,6 +5,9 @@
 #include "Persona.h"
 #include <fstream>
 #include <sstream>
+#include <string>
+
+using namespace std;
 
 // Costruttore
 Persona::Persona(const string& nome, const string& cognome, const string& cF)

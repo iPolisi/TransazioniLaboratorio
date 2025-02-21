@@ -5,8 +5,10 @@
 #include <iostream>
 #include <fstream>
 
+using namespace std;
+
 Stipendio::Stipendio(double importo, const string& descrizione, double trattenute)
-    : Transazione(importo, descrizione), trattenute(trattenute) {}
+    : Transazione(importo, descrizione, true), trattenute(trattenute) {}
 
 bool Stipendio::eEntrata() const {
     return true;
@@ -21,7 +23,8 @@ void Stipendio::salvaSuFile(const string& filename) const {
     if (file.is_open()) {
         file << "Stipendio," << importo << "," << descrizione << "," << trattenute << endl;
         file.close();
-    }
+    } else{}
+        cerr << "Impossibile aprire il file " << filename << endl;
 }
 
 double Stipendio::calcolaImportoNetto() const {

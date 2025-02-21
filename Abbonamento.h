@@ -6,6 +6,7 @@
 #define ABBONAMENTO_H
 
 #include "Transazione.h"
+#include <string>
 
 class Abbonamento : public Transazione {
 private:

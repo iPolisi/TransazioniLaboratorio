@@ -12,7 +12,8 @@ private:
     double trattenute;
 
 public:
-    Stipendio(double importo, const string& descrizione, double trattenute);
+
+    Stipendio(double importo, const string &descrizione, double trattenute);
 
     bool eEntrata() const override;
     void stampaTransazione() const override;

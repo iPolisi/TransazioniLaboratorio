@@ -6,6 +6,9 @@
 #define BONIFICOUscita_H
 
 #include "Transazione.h"
+#include <string>
+
+using namespace std;
 
 class BonificoUscita : public Transazione {
 private:
@@ -13,8 +16,10 @@ private:
     double commissione;
 
 public:
-    BonificoUscita(double importo, const string& descrizione, const string& destinatario, double commissione);
+    BonificoUscita(double importo, const string& descrizione, const string& destinatario);
 
+    double getImporto() const override;
+    string getDescrizione() const override;
     bool eEntrata() const override;
     void stampaTransazione() const override;
     void salvaSuFile(const string& filename) const override;

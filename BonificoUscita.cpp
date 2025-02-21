@@ -5,22 +5,31 @@
 #include <iostream>
 #include <fstream>
 
-BonificoUscita::BonificoUscita(double importo, const string& descrizione, const string& destinatario, double commissione)
-    : Transazione(importo, descrizione), destinatario(destinatario), commissione(commissione) {}
+#define float commissione=2,5
+
+BonificoUscita::BonificoUscita(double importo, const string& descrizione, const string& destinatario)
+    : Transazione(importo, descrizione, false), destinatario(destinatario) {}
 
 bool BonificoUscita::eEntrata() const {
     return false;
 }
 
+double BonificoUscita::getImporto() const{
+    return importo;
+}
+
 void BonificoUscita::stampaTransazione() const {
-    cout << "Bonifico in uscita: " << descrizione << ", Importo: " << importo << ", Destinatario: " << destinatario << ", Commissione: " << commissione << endl;
+    cout << "Bonifico in uscita: " << descrizione << ", Importo: " << importo << ", Destinatario: " << destinatario << endl;
 }
 
 void BonificoUscita::salvaSuFile(const string& filename) const {
     ofstream file(filename, ios::app);
     if (file.is_open()) {
-        file << "Uscita," << importo << "," << descrizione << "," << destinatario << "," << commissione << endl;
+        file << "Uscita," << importo << "," << descrizione << "," << destinatario << endl;
         file.close();
+    }else {
+        cerr << "Errore: impossibile aprire il file " << filename << endl;
+
     }
 }
 

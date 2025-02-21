@@ -5,8 +5,10 @@
 #include <iostream>
 #include <fstream>
 
+using namespace std;
+
 BonificoEntrata::BonificoEntrata(double importo, const string& descrizione, const string& mittente)
-    : Transazione(importo, descrizione), mittente(mittente) {}
+    : Transazione(importo, descrizione, true), mittente(mittente) {}
 
 bool BonificoEntrata::eEntrata() const {
     return true;
@@ -21,6 +23,9 @@ void BonificoEntrata::salvaSuFile(const string& filename) const {
     if (file.is_open()) {
         file << "Entrata," << importo << "," << descrizione << "," << mittente << endl;
         file.close();
+    }else {
+        cerr << "Errore: impossibile aprire il file " << filename << endl;
+
     }
 }
 

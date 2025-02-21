@@ -18,7 +18,7 @@ private:
 
 public:
     // Costruttore
-    Conto(const string& IBAN, const Persona& intestatario, double saldoIniziale);
+    Conto(const string &IBAN, double saldoIniziale, Persona *intestatario);
 
     // Getter
     string getIBAN() const;
@@ -27,8 +27,6 @@ public:
     void stampaConto() const;
 
     Persona getIntestatario() const;
-
-    Conto(const string &IBAN, double saldoIniziale, Persona *intestatario);
 
     // Metodi per la gestione delle transazioni
     void aggiungiTransazione(Transazione* transazione);

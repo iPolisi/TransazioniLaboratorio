@@ -17,7 +17,7 @@ protected:
 
 public:
     // Costruttore
-    Transazione(double importo, const string& descrizione);
+    Transazione(double importo, const string& descrizione, bool isEntrata);
 
     // Getter puramente virtuali (classe astratta)
     virtual double getImporto() const = 0;
