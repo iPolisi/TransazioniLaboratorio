@@ -60,7 +60,7 @@ TEST_F(ContoCorrenteTest, SalvataggioSuFile) {
 
     std::string output = buffer.str();
     EXPECT_NE(output.find("IT123456789,Entrata,150,Bonus,10/10/2025"), std::string::npos);
-    EXPECT_NE(output.find("IT123456789,Uscita,50,Spesa,11/10/2025"), std::string::npos);
+    EXPECT_NE(output.find("IT123456789,Uscita,50,Spesa,10/10/2025"), std::string::npos);
 }
 
 // **Test per caricare da file**

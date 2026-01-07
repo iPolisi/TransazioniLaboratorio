@@ -3,10 +3,12 @@
 //
 #include "gtest/gtest.h"
 #include "../Entrata.h"
+#include "../Data.h"
 #include <sstream>
 
 TEST(EntrataTest, CreazioneEntrata) {
-    Entrata e(100.0, "Stipendio");
+    Data dTest(15,8,2025);
+    Entrata e(100.0, "Stipendio", dTest);
 
     EXPECT_EQ(e.getImporto(), 100.0);
     EXPECT_EQ(e.getDescrizione(), "Stipendio");
@@ -14,7 +16,8 @@ TEST(EntrataTest, CreazioneEntrata) {
 }
 
 TEST(EntrataTest, SalvaSuFile) {
-    Entrata e(50.0, "Bonus");
+    Data dTest(15,8,2025);
+    Entrata e(50.0, "Bonus", dTest);
 
     std::stringstream ss;
     e.salvaSuFile(ss, "IT123456789");
@@ -24,4 +27,7 @@ TEST(EntrataTest, SalvaSuFile) {
     EXPECT_NE(output.find("Entrata"), std::string::npos);
     EXPECT_NE(output.find("50"), std::string::npos);
     EXPECT_NE(output.find("Bonus"), std::string::npos);
+    EXPECT_EQ(e.getData().getGiorno(), 15);
+    EXPECT_EQ(e.getData().getMese(), 8);
+    EXPECT_EQ(e.getData().getAnno(), 2025);
 }

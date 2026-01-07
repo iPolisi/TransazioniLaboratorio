@@ -22,10 +22,10 @@ public:
     Transazione(double imp, string desc, Data d);
     virtual ~Transazione() = default;
     virtual string tipo() const;
-    virtual double getValore() const=0; //verrà gestito l'importo dalle derivate
 
     void salvaSuFile(ostream &file, const string &iban) const;
 
+    virtual double getValore() const=0; //verrà gestito l'importo dalle derivate
     double getImporto() const;
     string getDescrizione() const;
     Data getData() const;
