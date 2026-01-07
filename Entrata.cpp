@@ -3,8 +3,12 @@
 //
 #include "Entrata.h"
 
-Entrata::Entrata(double imp, string desc) : Transazione(imp, desc) {}
+Entrata::Entrata(double imp, string desc, Data d) : Transazione(imp, desc, d) {}
 
 string Entrata::tipo() const {
     return "Entrata";
+}
+
+double Entrata::getValore() const {
+    return importo;
 }

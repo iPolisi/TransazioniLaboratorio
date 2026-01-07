@@ -7,6 +7,7 @@
 
 #include <string>
 #include <fstream>
+#include "Data.h"
 
 using namespace std;
 
@@ -14,17 +15,21 @@ class Transazione {
 protected:
     double importo;
     string descrizione;
+    Data data;
     //protected dato che sono attributi che verranno ereditati da Uscita ed Entrata
 
 public:
-    Transazione(double imp, string desc);
+    Transazione(double imp, string desc, Data d);
     virtual ~Transazione() = default;
     virtual string tipo() const;
+    virtual double getValore() const=0; //verrà gestito l'importo dalle derivate
 
     void salvaSuFile(ostream &file, const string &iban) const;
 
     double getImporto() const;
     string getDescrizione() const;
+    Data getData() const;
+
 };
 
 #endif // TRANSAZIONE_H

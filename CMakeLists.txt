@@ -14,6 +14,8 @@ add_executable(Prova
         Entrata.cpp
         Uscita.cpp
         ContoCorrente.cpp
+        Data.h
+        Data.cpp
 )
 
 # Eseguibile per i test (SEPARATO)
@@ -27,6 +29,8 @@ add_executable(runTests
         Entrata.cpp
         Uscita.cpp
         ContoCorrente.cpp
+        Data.h
+        Data.cpp
 )
 
 # Linka GoogleTest solo ai test

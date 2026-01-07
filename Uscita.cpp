@@ -3,8 +3,12 @@
 //
 #include "Uscita.h"
 
-Uscita::Uscita(double imp, string desc) : Transazione(imp, desc) {}
+Uscita::Uscita(double imp, string desc, Data d) : Transazione(imp, desc, d) {}
 
 string Uscita::tipo() const {
     return "Uscita";
+}
+
+double Uscita::getValore() const{
+    return -importo;
 }

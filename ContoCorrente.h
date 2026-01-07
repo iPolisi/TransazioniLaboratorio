@@ -21,6 +21,7 @@ public:
     ContoCorrente(string ib, string intest, string file);
     ~ContoCorrente();
 
+    //agiunta di modifica, cercare, ed eliminare per ogni campo di una transazione con modifica del saldo
     void aggiungiTransazione(Transazione* t);
     void salvaSuFile(ostream &file, const string &iban) const;
     void caricaDaFile();

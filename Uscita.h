@@ -9,8 +9,9 @@
 
 class Uscita : public Transazione {
 public:
-    Uscita(double imp, string desc);
+    Uscita(double imp, string desc, Data d);
     string tipo() const override;
+    double getValore() const override;
 };
 
 #endif // USCITA_H

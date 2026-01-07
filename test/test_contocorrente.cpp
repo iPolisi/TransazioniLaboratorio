@@ -2,6 +2,7 @@
 #include "../ContoCorrente.h"
 #include "../Entrata.h"
 #include "../Uscita.h"
+#include "../Data.h"
 #include <fstream>
 
 class ContoCorrenteTest : public ::testing::Test {
@@ -11,8 +12,8 @@ protected:
         testFilePath = "test_transazioni.csv";
         std::ofstream file(testFilePath);
         if (file) {
-            file << "IT123456789,Entrata,100,Stipendio\n";
-            file << "IT123456789,Uscita,50,Spesa\n";
+            file << "IT123456789,Entrata,100,Stipendio,01/01/2023\n";
+            file << "IT123456789,Uscita,50,Spesa,02/01/2023\n";
             file.close();
         }
     }
@@ -25,6 +26,7 @@ protected:
     std::string testFilePath;
 };
 
+
 // **Test per la creazione del conto**
 TEST_F(ContoCorrenteTest, CreazioneConto) {
     ContoCorrente conto("IT123456789", "Mario Rossi", testFilePath);
@@ -35,7 +37,7 @@ TEST_F(ContoCorrenteTest, CreazioneConto) {
 // **Test per aggiungere una transazione**
 TEST_F(ContoCorrenteTest, AggiuntaTransazione) {
     ContoCorrente conto("IT123456789", "Mario Rossi", testFilePath);
-    Transazione* entrata = new Entrata(200.0, "Bonus");
+    Transazione* entrata = new Entrata(200.0, "Bonus", Data(15,8,2025));
     conto.aggiungiTransazione(entrata);
     EXPECT_EQ(conto.getSaldo(), 200.0);
 }
@@ -43,8 +45,8 @@ TEST_F(ContoCorrenteTest, AggiuntaTransazione) {
 // **Test per salvare su file**
 TEST_F(ContoCorrenteTest, SalvataggioSuFile) {
     ContoCorrente conto("IT123456789", "Mario Rossi", testFilePath);
-    conto.aggiungiTransazione(new Entrata(150.0, "Bonus"));
-    conto.aggiungiTransazione(new Uscita(50.0, "Spesa"));
+    conto.aggiungiTransazione(new Entrata(150.0, "Bonus", Data(10,10,2025)));
+    conto.aggiungiTransazione(new Uscita(50.0, "Spesa", Data(10,10,2025)));
 
     std::ofstream file(testFilePath);
     conto.salvaSuFile(file, "IT123456789");
@@ -57,8 +59,8 @@ TEST_F(ContoCorrenteTest, SalvataggioSuFile) {
     inFile.close();
 
     std::string output = buffer.str();
-    EXPECT_NE(output.find("IT123456789,Entrata,150,Bonus"), std::string::npos);
-    EXPECT_NE(output.find("IT123456789,Uscita,50,Spesa"), std::string::npos);
+    EXPECT_NE(output.find("IT123456789,Entrata,150,Bonus,10/10/2025"), std::string::npos);
+    EXPECT_NE(output.find("IT123456789,Uscita,50,Spesa,11/10/2025"), std::string::npos);
 }
 
 // **Test per caricare da file**
@@ -67,4 +69,10 @@ TEST_F(ContoCorrenteTest, CaricamentoDaFile) {
     conto.caricaDaFile();
 
     EXPECT_EQ(conto.getSaldo(), 50.0);  // 100 - 50 = 50
+}
+
+TEST(DataTest, EccezioneDataInvalida) {
+    EXPECT_THROW(Data(30, 2, 2025), std::invalid_argument); // 30 Febbraio deve lanciare errore
+    EXPECT_THROW(Data(1, 13, 2025), std::invalid_argument); // Mese 13 deve lanciare errore
+    EXPECT_NO_THROW(Data(29, 2, 2024)); // Anno bisestile, deve funzionare
 }
