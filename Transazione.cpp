@@ -24,3 +24,15 @@ string Transazione::getDescrizione() const {
 }
 
 Data Transazione::getData() const {return data;}
+
+void Transazione::setImporto(double imp) {
+    importo = imp;
+}
+
+void Transazione::setDescrizione(string desc) {
+    descrizione = desc;
+}
+
+void Transazione::setData(Data d) {
+    data = d;
+}

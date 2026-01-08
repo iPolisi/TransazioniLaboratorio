@@ -29,6 +29,11 @@ public:
     string getIban() const;
     double getSaldo() const;
 
+    void rimuoviTransazione(int indice) ; //verrò rimossa una transazione tramite un indice (primo =0)
+    void modificaTransazione(int indice, double nuovoImp, string nuovaDesc, Data nuovaData);
+    vector<int> cercaDescrizione(string keyWord) const; //ricerca tramite descrizione (rende tutti gli indici matchati
+    vector<int> cercaData(Data dataFind) const;
+
 };
 
 #endif // CONTOCORRENTE_H

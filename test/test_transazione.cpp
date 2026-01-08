@@ -67,3 +67,25 @@ TEST(UscitaTest, Costruttore) {
     EXPECT_EQ(uscita.getDescrizione(), "Benzina");
     EXPECT_EQ(uscita.tipo(), "Uscita");  // Assumendo che tipo() ritorni "Uscita"
 }
+
+// TEST di verifica dei Setters
+TEST(TransazioneTest, ModificaCampi) {
+    Data dataIniziale(1, 1, 2024);
+    TransazioneTestHelper t(50.0, "Inizio", dataIniziale);
+
+    // Modifica Importo
+    t.setImporto(99.99);
+    EXPECT_EQ(t.getImporto(), 99.99);
+
+    // Modifica Descrizione
+    t.setDescrizione("Fine");
+    EXPECT_EQ(t.getDescrizione(), "Fine");
+
+    // Modifica Data
+    Data dataNuova(31, 12, 2024);
+    t.setData(dataNuova);
+
+    EXPECT_EQ(t.getData().getGiorno(), 31);
+    EXPECT_EQ(t.getData().getMese(), 12);
+    EXPECT_EQ(t.getData().getAnno(), 2024);
+}

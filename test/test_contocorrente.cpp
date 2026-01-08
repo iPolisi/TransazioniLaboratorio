@@ -76,3 +76,88 @@ TEST(DataTest, EccezioneDataInvalida) {
     EXPECT_THROW(Data(1, 13, 2025), std::invalid_argument); // Mese 13 deve lanciare errore
     EXPECT_NO_THROW(Data(29, 2, 2024)); // Anno bisestile, deve funzionare
 }
+
+// TEST di Rimozione Transazione
+TEST_F(ContoCorrenteTest, RimozioneTransazione) {
+    ContoCorrente conto("IT123", "Mario", testFilePath);
+
+    // Aggiungiamo 3 transazioni
+    conto.aggiungiTransazione(new Entrata(100.0, "Entrata1", Data(1,1,2025))); // Indice 0
+    conto.aggiungiTransazione(new Uscita(20.0, "Uscita1", Data(2,1,2025)));    // Indice 1
+    conto.aggiungiTransazione(new Uscita(10.0, "Uscita2", Data(3,1,2025)));    // Indice 2
+
+    // Saldo iniziale: 100 - 20 - 10 = 70
+    EXPECT_EQ(conto.getSaldo(), 70.0);
+
+    // Rimozione dell'uscita 20 (Indice 1)
+    // Il saldo dovrebbe salire: 70 + 20 = 90
+    conto.rimuoviTransazione(1);
+    EXPECT_EQ(conto.getSaldo(), 90.0);
+
+    // Rimozione dell'entrata di 100 (Ora è all'Indice 0 perché la lista scala)
+    // Il saldo dovrebbe scendere: 90 - 100 = -10
+    conto.rimuoviTransazione(0);
+    EXPECT_EQ(conto.getSaldo(), -10.0);
+}
+
+// TEST di Modifica Transazione
+TEST_F(ContoCorrenteTest, ModificaTransazione) {
+    ContoCorrente conto("IT123", "Mario", testFilePath);
+
+    conto.aggiungiTransazione(new Entrata(50.0, "Bonus", Data(10,1,2025)));
+    // Saldo: 50
+
+    // Il Bonus passa da 50 a 200
+    conto.modificaTransazione(0, 200.0, "Super Bonus", Data(12,1,2025));
+
+    // Verifica nuovo saldo: 200
+    EXPECT_EQ(conto.getSaldo(), 200.0);
+
+    // Verifica cambio descrizione
+    vector<int> trovati = conto.cercaDescrizione("Super");
+    EXPECT_FALSE(trovati.empty());
+}
+
+//  TEST Ricerca
+TEST_F(ContoCorrenteTest, RicercaTransazioni) {
+    ContoCorrente conto("IT123", "Mario", testFilePath);
+
+    conto.aggiungiTransazione(new Entrata(100, "Stipendio Gennaio", Data(1,1,2025)));
+    conto.aggiungiTransazione(new Uscita(50, "Spesa Conad", Data(5,1,2025)));
+    conto.aggiungiTransazione(new Entrata(100, "Stipendio Febbraio", Data(1,2,2025)));
+
+    // Cerca per parola chiave "Stipendio"
+    vector<int> risultatiDesc = conto.cercaDescrizione("Stipendio");
+    EXPECT_EQ(risultatiDesc.size(), 2); // Deve trovarne 2
+
+    // Cerca per parola chiave "Conad"
+    vector<int> risultatiDesc2 = conto.cercaDescrizione("Conad");
+    EXPECT_EQ(risultatiDesc2.size(), 1); // Deve trovarne 1
+
+    // Cerca per Data (1 Febbraio 2025)
+    vector<int> risultatiData = conto.cercaData(Data(1, 2, 2025));
+    EXPECT_EQ(risultatiData.size(), 1);
+
+    // Verifica che l'indice trovato corrisponda a "Stipendio Febbraio" (che è il terzo inserito, indice 2)
+    // gli indici sono 0, 1, 2.
+    int indiceTrovato = risultatiData[0];
+    EXPECT_EQ(indiceTrovato, 2);
+}
+
+// TEST INTEGRITÀ: Modifica su Uscita ===
+TEST_F(ContoCorrenteTest, ModificaUscita) {
+    ContoCorrente conto("IT123", "Mario", testFilePath);
+
+    // Saldo iniziale 1000
+    conto.aggiungiTransazione(new Entrata(1000.0, "Base", Data(1,1,2025)));
+
+    // Aggiunta uscita di 100. Saldo -> 900
+    conto.aggiungiTransazione(new Uscita(100.0, "Errore", Data(1,1,2025)));
+    EXPECT_EQ(conto.getSaldo(), 900.0);
+
+    // Modifica dell'uscita: da 100 passa a 500.
+    // Il saldo deve scendere di altri 400 -> 500.
+    conto.modificaTransazione(1, 500.0, "Corretto", Data(1,1,2025));
+
+    EXPECT_EQ(conto.getSaldo(), 500.0);
+}

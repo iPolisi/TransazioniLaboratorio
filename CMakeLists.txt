@@ -31,6 +31,7 @@ add_executable(runTests
         ContoCorrente.cpp
         Data.h
         Data.cpp
+        test/test_data.cpp
 )
 
 # Linka GoogleTest solo ai test

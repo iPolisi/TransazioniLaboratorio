@@ -8,6 +8,7 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
+#include <stdexcept>
 
 
 //tornare anche il numero delle transazioni presenti su un conto
@@ -96,3 +97,55 @@ string ContoCorrente::getIban() const {return iban;};
 double ContoCorrente::getSaldo() const {
     return saldo;
 }
+
+void ContoCorrente::rimuoviTransazione(int indice) {
+    if (indice < 0 || indice >= transazioni.size()) {cerr << "Indice non valido!" << endl; return;}//se non rientra nel campo termina il metodo
+
+    Transazione *t=transazioni[indice];
+    saldo -= t->getValore(); //dato che rimuovo il saldo e nelle classi derivate modifico il segno se è e/u
+    //mi calcolo il saldo aggiornato levando semplicemente il valore stesso col segno (+e, -u)
+
+    delete t;
+    transazioni.erase(transazioni.begin()+indice); //rimozione da memoria e poi anche dal vettore
+
+    cout << "Transazione " << indice << " rimossa. Il nuovo saldo e' di: " << saldo << endl;
+
+}
+
+void ContoCorrente::modificaTransazione(int indice, double nuovoImp, string nuovaDesc, Data nuovaData) {
+    if (indice < 0 || indice >= transazioni.size()) {cerr << "Indice non valido!" << endl; return;}//se non rientra nel campo termina il metodo
+
+    Transazione *t=transazioni[indice];
+
+    saldo -=t->getValore(); //viene rimosso l'effetto della transazione corrente, ossia il suo valore
+
+    t->setImporto(nuovoImp);
+    t->setDescrizione(nuovaDesc);
+    t->setData(nuovaData);
+    //modifica effettiva della transazione
+
+    saldo += t->getValore();//aggiornamento del saldo col nuovo importo
+
+    cout << "Transazione " << indice << "modificata. Saldo aggiornato: " << saldo << endl;
+}
+
+vector<int> ContoCorrente::cercaDescrizione(string key) const {
+
+    vector<int> res;//verranno salvati tutti gli elementi con la substringa data in input
+    for (size_t i = 0; i < transazioni.size(); i++) {
+        if (transazioni[i]->getDescrizione().find(key) != string::npos) {res.push_back(i);}
+    }
+    return res;
+}
+
+vector<int> ContoCorrente::cercaData(Data dataFind) const {
+    vector<int> res;
+    for (size_t i = 0; i < transazioni.size(); i++) {
+        Data d=transazioni[i]->getData();//analizzo la data in quel ciclo
+        if (d.getAnno()==dataFind.getAnno() && d.getMese()==dataFind.getMese() && d.getGiorno()==dataFind.getGiorno()) {
+            res.push_back(i);
+        }
+    }
+    return res;
+}
+

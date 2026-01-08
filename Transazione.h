@@ -30,6 +30,10 @@ public:
     string getDescrizione() const;
     Data getData() const;
 
+    void setImporto(double imp);
+    void setDescrizione(string desc);
+    void setData(const Data d);
+
 };
 
 #endif // TRANSAZIONE_H
