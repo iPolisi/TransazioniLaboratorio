@@ -4,8 +4,20 @@ project(Prova)
 # Imposta il C++ standard
 set(CMAKE_CXX_STANDARD 20)
 
+include(FetchContent)
+
+FetchContent_Declare(
+        googletest
+        URL https://github.com/google/googletest/archive/refs/tags/v1.14.0.zip
+        DOWNLOAD_EXTRACT_TIMESTAMP TRUE
+)
+# Per evitare problemi su Windows con le librerie statiche
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+
+FetchContent_MakeAvailable(googletest)
+
 # Aggiungi GoogleTest come sottodirectory
-add_subdirectory(_deps/googletest)
+#add_subdirectory(_deps/googletest)
 
 # Eseguibile principale (SENZA i test)
 add_executable(Prova
@@ -42,7 +54,7 @@ enable_testing()
 add_test(NAME RunAllTests COMMAND runTests)
 
 # Aggiungi esplicitamente il percorso degli header di GoogleTest
-target_include_directories(runTests PRIVATE ${CMAKE_SOURCE_DIR}/_deps/googletest/googletest/include)
+#target_include_directories(runTests PRIVATE ${CMAKE_SOURCE_DIR}/_deps/googletest/googletest/include)
 
 # Messaggio di debug
 message(STATUS "CMAKE_SOURCE_DIR: ${CMAKE_SOURCE_DIR}")
