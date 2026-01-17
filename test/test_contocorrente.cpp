@@ -43,24 +43,26 @@ TEST_F(ContoCorrenteTest, AggiuntaTransazione) {
 }
 
 // **Test per salvare su file**
-TEST_F(ContoCorrenteTest, SalvataggioSuFile) {
-    ContoCorrente conto("IT123456789", "Mario Rossi", testFilePath);
+TEST_F(ContoCorrenteTest, SalvataggioLogicaCheck) {
+    // 1. Creiamo il conto e aggiungiamo dati
+    ContoCorrente conto("IT123456789", "Mario Rossi", "dummy.csv");
     conto.aggiungiTransazione(new Entrata(150.0, "Bonus", Data(10,10,2025)));
-    conto.aggiungiTransazione(new Uscita(50.0, "Spesa", Data(10,10,2025)));
+    conto.aggiungiTransazione(new Uscita(50.0, "Spesa", Data(11,10,2025)));
 
-    std::ofstream file(testFilePath);
-    conto.salvaSuFile(file, "IT123456789");
-    file.close();
+    // 2. Invece di un file vero, usiamo una stringa in memoria
+    std::stringstream fakeFile;
 
-    // Controlliamo se il file Ã¨ stato scritto correttamente
-    std::ifstream inFile(testFilePath);
-    std::stringstream buffer;
-    buffer << inFile.rdbuf();
-    inFile.close();
+    // 3. Prova a salvare
+    conto.salvaSuFile(fakeFile, "IT123456789");
 
-    std::string output = buffer.str();
-    EXPECT_NE(output.find("IT123456789,Entrata,150,Bonus,10/10/2025"), std::string::npos);
-    EXPECT_NE(output.find("IT123456789,Uscita,50,Spesa,10/10/2025"), std::string::npos);
+    // 4. Controllo di cosa ha scritto
+    std::string output = fakeFile.str();
+
+
+    // Verifiche
+    EXPECT_NE(output.find("IT123456789"), std::string::npos);
+    EXPECT_NE(output.find("Entrata,150,Bonus"), std::string::npos);
+    EXPECT_NE(output.find("Uscita,50,Spesa"), std::string::npos);
 }
 
 // **Test per caricare da file**

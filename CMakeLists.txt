@@ -32,7 +32,7 @@ add_executable(Prova
 
 # Eseguibile per i test (SEPARATO)
 add_executable(runTests
-        test/test_main.cpp
+
         test/test_transazione.cpp
         test/test_entrata.cpp
         test/test_uscita.cpp
